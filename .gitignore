@@ -1,0 +1,10 @@
+# 不要上传的文件
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

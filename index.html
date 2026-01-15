@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 数字永生计划 - 维持你的数字生命</title>
+    
+    <!-- SEO优化 -->
+    <meta name="description" content="创意签到激励应用，通过游戏化的方式提醒用户每日签到。维持你的数字生命，解锁成就，享受永生体验！">
+    <meta name="keywords" content="签到,打卡,游戏化,习惯养成,数字生命,永生计划,死了么">
+    <meta name="author" content="数字永生实验室">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yoursite.github.io/">
+    <meta property="og:title" content="数字永生计划 - 维持你的数字生命">
+    <meta property="og:description" content="创意签到激励应用，通过游戏化的方式提醒用户每日签到。维持你的数字生命！">
+    <meta property="og:image" content="https://yoursite.github.io/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yoursite.github.io/">
+    <meta property="twitter:title" content="数字永生计划">
+    <meta property="twitter:description" content="创意签到激励应用，维持你的数字生命！">
+    <meta property="twitter:image" content="https://yoursite.github.io/og-image.png">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#00ff88">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="死了么">
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%2300ff88'/></svg>">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 背景特效 -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-brain-circuit"></i>
+                <h1>数字永生计划 <span class="beta">BETA</span></h1>
+            </div>
+            <div class="server-status">
+                <span class="status-dot active"></span>
+                <span>服务器在线</span>
+            </div>
+        </header>
+
+        <!-- 主面板 -->
+        <main class="dashboard">
+            <!-- 左侧：用户信息 -->
+            <section class="user-panel">
+                <div class="avatar-container">
+                    <div class="avatar" id="userAvatar">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="avatar-status" id="avatarStatus"></div>
+                </div>
+                
+                <div class="user-info">
+                    <h2 id="userName">数字公民 #0001</h2>
+                    <p class="user-id" id="userId">ID: DLP-2024-001</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <i class="fas fa-heartbeat"></i>
+                            <div>
+                                <h3 id="lifeForce">100%</h3>
+                                <p>生命能量</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-fire"></i>
+                            <div>
+                                <h3 id="streakDays">0</h3>
+                                <p>连续签到</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-trophy"></i>
+                            <div>
+                                <h3 id="totalDays">0</h3>
+                                <p>总签到天数</p>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-gem"></i>
+                            <div>
+                                <h3 id="energyCores">3</h3>
+                                <p>能量核心</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 签到按钮 -->
+                <div class="checkin-section">
+                    <button class="checkin-btn" id="checkinBtn">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>今日签到</span>
+                    </button>
+                    <p class="next-checkin" id="nextCheckinTime">
+                        距离下次签到: <span>23:59:59</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- 中间：主内容 -->
+            <section class="main-content">
+                <!-- 生命维持面板 -->
+                <div class="life-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-shield-alt"></i> 生命维持系统</h3>
+                        <div class="danger-level" id="dangerLevel">
+                            安全等级: <span class="safe">绿色</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 能量条 -->
+                    <div class="energy-bar-container">
+                        <div class="energy-bar">
+                            <div class="energy-fill" id="energyFill"></div>
+                        </div>
+                        <div class="energy-labels">
+                            <span>濒死</span>
+                            <span>虚弱</span>
+                            <span>健康</span>
+                            <span>活力</span>
+                            <span>永生</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 倒计时 -->
+                    <div class="countdown-panel">
+                        <h4><i class="fas fa-clock"></i> 生命倒计时</h4>
+                        <div class="countdown" id="countdown">
+                            <div class="countdown-item">
+                                <span class="number" id="days">00</span>
+                                <span class="label">天</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="hours">00</span>
+                                <span class="label">时</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="minutes">00</span>
+                                <span class="label">分</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="number" id="seconds">00</span>
+                                <span class="label">秒</span>
+                            </div>
+                        </div>
+                        <p class="countdown-note">
+                            如果倒计时归零，你的数字生命将被永久删除
+                        </p>
+                    </div>
+                    
+                    <!-- 紧急按钮 -->
+                    <div class="emergency-panel">
+                        <button class="emergency-btn" id="emergencyBtn">
+                            <i class="fas fa-sos"></i>
+                            <span>紧急求救</span>
+                        </button>
+                        <p class="emergency-note">
+                            生命能量低于20%时可发送求救邮件
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 签到历史 -->
+                <div class="history-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-history"></i> 签到历史</h3>
+                        <button class="view-all-btn" id="viewHistoryBtn">查看全部</button>
+                    </div>
+                    <div class="calendar" id="calendar">
+                        <!-- 日历通过JS动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧：通知和设置 -->
+            <section class="right-panel">
+                <!-- 通知中心 -->
+                <div class="notifications">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-bell"></i> 系统通知</h3>
+                        <span class="badge" id="notificationCount">3</span>
+                    </div>
+                    <div class="notification-list" id="notificationList">
+                        <!-- 通知通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 邮箱设置 -->
+                <div class="email-settings">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-envelope"></i> 生命维持邮箱</h3>
+                    </div>
+                    <div class="email-form">
+                        <div class="form-group">
+                            <label for="emailInput"><i class="fas fa-at"></i> 邮箱地址</label>
+                            <input type="email" id="emailInput" placeholder="输入接收通知的邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label for="reminderTime"><i class="fas fa-clock"></i> 提醒时间</label>
+                            <select id="reminderTime">
+                                <option value="18">18:00</option>
+                                <option value="20" selected>20:00</option>
+                                <option value="22">22:00</option>
+                                <option value="0">00:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-bell"></i> 提醒类型</label>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="dailyReminder" checked>
+                                    每日签到提醒
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="lowEnergyWarning" checked>
+                                    能量不足警告
+                                </label>
+                                <label>
+                                    <input type="checkbox" id="deathWarning" checked>
+                                    死亡倒计时警告
+                                </label>
+                            </div>
+                        </div>
+                        <button class="save-btn" id="saveEmailBtn">
+                            <i class="fas fa-save"></i> 保存设置
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 成就系统 -->
+                <div class="achievements">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-award"></i> 成就</h3>
+                    </div>
+                    <div class="achievement-list" id="achievementList">
+                        <!-- 成就通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 数据管理 -->
+                <div class="data-management">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-database"></i> 数据管理</h3>
+                    </div>
+                    <div class="data-actions">
+                        <button class="action-btn export-btn" id="exportDataBtn">
+                            <i class="fas fa-download"></i> 导出数据
+                        </button>
+                        <button class="action-btn import-btn" onclick="triggerImport()">
+                            <i class="fas fa-upload"></i> 导入数据
+                        </button>
+                        <button class="action-btn reset-btn" id="resetDataBtn">
+                            <i class="fas fa-trash-restore"></i> 重置数据
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部统计 -->
+        <footer class="footer">
+            <div class="global-stats">
+                <div class="global-stat">
+                    <i class="fas fa-users"></i>
+                    <span>活跃用户: <strong id="activeUsers">1,247</strong></span>
+                </div>
+                <div class="global-stat">
+                    <i class="fas fa-skull-crossbones"></i>
+                    <span>今日死亡: <strong id="todayDeaths">8</strong></span>
+                </div>
+                <div class="global-stat">
+                    <i class="fas fa-infinity"></i>
+                    <span>最长连续: <strong id="longestStreak">1,095</strong> 天</span>
+                </div>
+                <div class="global-stat">
+                    <i class="fas fa-server"></i>
+                    <span>系统运行: <strong id="systemUptime">365</strong> 天</span>
+                </div>
+            </div>
+            <div class="footer-notes">
+                <p>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    警告: 连续7天未签到将导致数字死亡，所有数据将被永久删除！
+                </p>
+                <p class="copyright">
+                    © 2024 数字永生实验室 | 版本 2.1.4 | 
+                    <a href="#" id="termsLink">服务条款</a> | 
+                    <a href="#" id="privacyLink">隐私政策</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal" id="deathModal">
+        <div class="modal-content death-modal">
+            <div class="modal-header">
+                <i class="fas fa-skull"></i>
+                <h2>⚠️ 数字死亡警告</h2>
+            </div>
+            <div class="modal-body">
+                <div class="death-message" id="deathMessage">
+                    <p>你的数字生命能量已耗尽！</p>
+                    <p class="countdown-death">永久删除倒计时: <span id="deathCountdown">05:00</span></p>
+                </div>
+                <div class="death-options">
+                    <button class="revive-btn" id="reviveBtn">
+                        <i class="fas fa-heart"></i> 立即复活 (消耗1能量核心)
+                    </button>
+                    <button class="accept-btn" id="acceptDeathBtn">
+                        <i class="fas fa-cross"></i> 接受数字死亡
+                    </button>
+                </div>
+                <div class="death-tips">
+                    <p><i class="fas fa-lightbulb"></i> 提示: 邀请好友加入可获赠能量核心</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 签到成功模态框 -->
+    <div class="modal" id="checkinModal">
+        <div class="modal-content checkin-modal">
+            <div class="modal-header">
+                <i class="fas fa-check-circle"></i>
+                <h2>✅ 签到成功！</h2>
+            </div>
+            <div class="modal-body">
+                <div class="checkin-reward" id="checkinReward">
+                    <!-- 奖励信息通过JS动态生成 -->
+                </div>
+                <button class="close-modal-btn" id="closeCheckinModal">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <p>正在连接数字永生网络...</p>
+        </div>
+    </div>
+
+    <!-- 消息提示 -->
+    <div class="message" id="message"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
