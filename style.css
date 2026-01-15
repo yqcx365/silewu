@@ -234,18 +234,43 @@ body {
     justify-content: center;
     gap: 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 15px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 按钮流光效果 */
+.checkin-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transform: rotate(45deg);
+    animation: button-shine 3s infinite;
+}
+
+@keyframes button-shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
 }
 
 .checkin-btn:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px var(--shadow-color);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px var(--shadow-color);
+}
+
+.checkin-btn:active:not(:disabled) {
+    transform: translateY(-1px) scale(0.98);
 }
 
 .checkin-btn:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
+    background: linear-gradient(135deg, #555, #666);
 }
 
 .next-checkin {
@@ -321,6 +346,7 @@ body {
     overflow: hidden;
     margin-bottom: 10px;
     position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .energy-fill {
@@ -329,7 +355,42 @@ body {
     background: linear-gradient(90deg, var(--danger-color), var(--warning-color), var(--safe-color));
     border-radius: 15px;
     position: relative;
-    transition: width 0.5s ease;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+/* 能量条流光效果 */
+.energy-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* 能量条脉冲效果 */
+.energy-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    animation: pulse-energy 2s ease-in-out infinite;
+}
+
+@keyframes pulse-energy {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
 }
 
 .energy-labels {
@@ -755,10 +816,21 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .footer-notes p i {
     color: var(--warning-color);
+}
+
+.footer-notes kbd {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-color);
 }
 
 .copyright {
@@ -1107,12 +1179,29 @@ body {
     color: white;
     font-size: 1rem;
     font-weight: 500;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     z-index: 3000;
     transform: translateX(400px);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .message.show {
     transform: translateX(0);
+    animation: messageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes messageSlideIn {
+    0% {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }

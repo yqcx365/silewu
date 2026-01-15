@@ -1,5 +1,5 @@
 // Service Worker for PWA
-const CACHE_NAME = 'digital-immortality-v2.1.4';
+const CACHE_NAME = 'digital-immortality-v2.3.0';
 const urlsToCache = [
   './',
   './index.html',

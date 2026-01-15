@@ -67,6 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 注册 Service Worker
     registerServiceWorker();
     
+    // 添加快捷键支持
+    setupKeyboardShortcuts();
+    
     // 隐藏加载动画
     setTimeout(() => {
         document.getElementById('loader').style.display = 'none';
@@ -389,6 +392,9 @@ function performCheckin() {
     
     // 更新UI
     updateUI();
+    
+    // 播放成功音效
+    playSound('success');
     
     // 显示签到奖励
     showCheckinReward();
@@ -890,15 +896,24 @@ function showMessage(text, type = 'info') {
     const messageDiv = document.getElementById('message');
     messageDiv.textContent = text;
     
+    // 播放音效
+    if (type === 'success') {
+        playSound('success');
+    } else if (type === 'error') {
+        playSound('error');
+    } else if (type === 'warning') {
+        playSound('warning');
+    }
+    
     // 设置颜色
     if (type === 'success') {
-        messageDiv.style.background = '#00b894';
+        messageDiv.style.background = 'linear-gradient(135deg, #00b894, #00ff88)';
     } else if (type === 'error') {
-        messageDiv.style.background = '#ff4757';
+        messageDiv.style.background = 'linear-gradient(135deg, #ff4757, #ff6b81)';
     } else if (type === 'warning') {
-        messageDiv.style.background = '#f39c12';
+        messageDiv.style.background = 'linear-gradient(135deg, #f39c12, #ffa502)';
     } else {
-        messageDiv.style.background = '#0984e3';
+        messageDiv.style.background = 'linear-gradient(135deg, #0984e3, #00ccff)';
     }
     
     // 显示消息
@@ -1188,5 +1203,79 @@ function registerServiceWorker() {
             .catch(error => {
                 console.log('Service Worker 注册失败:', error);
             });
+    }
+}
+
+// 设置快捷键
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function(e) {
+        // 空格键签到
+        if (e.code === 'Space' && !e.target.matches('input, textarea')) {
+            e.preventDefault();
+            const checkinBtn = document.getElementById('checkinBtn');
+            if (!checkinBtn.disabled) {
+                performCheckin();
+            }
+        }
+        
+        // ESC 关闭弹窗
+        if (e.code === 'Escape') {
+            document.querySelectorAll('.modal.active').forEach(modal => {
+                modal.classList.remove('active');
+            });
+        }
+        
+        // Ctrl+E 导出数据
+        if (e.ctrlKey && e.code === 'KeyE') {
+            e.preventDefault();
+            exportData();
+        }
+        
+        // Ctrl+I 导入数据
+        if (e.ctrlKey && e.code === 'KeyI') {
+            e.preventDefault();
+            triggerImport();
+        }
+    });
+}
+
+// 播放音效
+function playSound(type) {
+    // 使用Web Audio API生成简单音效
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        if (type === 'success') {
+            // 成功音：清脆的叠加音
+            oscillator.frequency.value = 523.25; // C5
+            oscillator.start();
+            setTimeout(() => {
+                oscillator.frequency.value = 659.25; // E5
+            }, 100);
+            setTimeout(() => {
+                oscillator.frequency.value = 783.99; // G5
+            }, 200);
+        } else if (type === 'warning') {
+            // 警告音
+            oscillator.frequency.value = 400;
+        } else if (type === 'error') {
+            // 错误音
+            oscillator.frequency.value = 200;
+        }
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        setTimeout(() => {
+            oscillator.stop();
+        }, 300);
+    } catch (e) {
+        // 静默失败，不影响功能
+        console.log('音效播放失败:', e);
     }
 }
